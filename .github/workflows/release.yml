@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve release tag
+        id: tag
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            tag="$GITHUB_REF_NAME"
+          else
+            tag="$(git tag --sort=-version:refname | head -n 1)"
+          fi
+
+          if [[ -z "$tag" ]]; then
+            echo "No release tag found."
+            exit 0
+          fi
+
+          echo "name=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub release
+        if: steps.tag.outputs.name != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.tag.outputs.name }}
+        run: gh release view "$TAG" || gh release create "$TAG" --generate-notes --title "$TAG"
