@@ -1,0 +1,58 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "alexeypenkov/laravel-telescope-mcp",
+    "type": "library",
+    "description": "A read-only MCP server for investigating Laravel applications through Telescope.",
+    "keywords": [
+        "laravel",
+        "mcp",
+        "observability",
+        "telescope"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^11.45.3|^12.41.1|^13.0",
+        "laravel/mcp": "^0.9.3",
+        "laravel/telescope": "^5.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.27",
+        "mockery/mockery": "^1.6",
+        "orchestra/testbench": "^9.15|^10.8|^11.0",
+        "phpunit/phpunit": "^11.5|^12.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "AlexeyPenkov\\TelescopeMcp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "format": "pint",
+        "test": "phpunit",
+        "test:format": "pint --test"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AlexeyPenkov\\TelescopeMcp\\TelescopeMcpServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
